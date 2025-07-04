@@ -29,11 +29,11 @@ export function usePokemonDetail(id: string) {
   });
 
   // detalles de los movimientos.
-  const moveUrls = pokemon?.moves.slice(0, 20).map((move: any) => move.move.url);
+  const pokemonMoves = pokemon?.moves;
   const { data: moves = [], isLoading: isLoadingMoves } = useQuery({
     queryKey: ['moves', id],
-    queryFn: () => getMoveDetails(moveUrls!),
-    enabled: !!moveUrls && moveUrls.length > 0,
+    queryFn: () => getMoveDetails(pokemonMoves!),
+    enabled: !!pokemonMoves && pokemonMoves.length > 0,
     staleTime: Infinity,
   });
 

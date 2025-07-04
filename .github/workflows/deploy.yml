@@ -1,0 +1,56 @@
+name: Deploy to GitHub Pages
+
+# Evento que dispara el workflow: se ejecuta cada vez que haces un push a la rama 'main'
+on:
+  push:
+    branches:
+      - main  # Puedes cambiarlo a 'master' si esa es tu rama principal
+
+# Permisos necesarios para que la Action pueda escribir en la rama gh-pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Los trabajos (jobs) que se ejecutarán
+jobs:
+  build-and-deploy:
+    # El tipo de máquina virtual donde se ejecutará el trabajo
+    runs-on: ubuntu-latest
+    
+    # Los pasos que componen el trabajo
+    steps:
+      # 1. Clona tu repositorio en la máquina virtual
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      # 2. Configura Node.js
+      - name: Setup Node.js ⚙️
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Usa una versión LTS de Node.js
+          cache: 'npm' # Habilita el cacheo de dependencias de npm para mayor velocidad
+
+      # 3. Instala las dependencias
+      - name: Install dependencies 📦
+        run: npm install
+
+      # 4. Construye el proyecto para producción
+      #    El comando 'npm run build' ejecuta 'vite build', que crea la carpeta 'dist'
+      - name: Build project 🏗️
+        run: npm run build
+
+      # 5. Prepara el artefacto para el despliegue en GitHub Pages
+      - name: Setup Pages 📤
+        uses: actions/configure-pages@v4
+
+      # 6. Sube el contenido de la carpeta 'dist' como un artefacto
+      - name: Upload artifact 🚀
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist' # Vite construye el proyecto en la carpeta 'dist' por defecto
+
+      # 7. Despliega el artefacto en GitHub Pages
+      - name: Deploy to GitHub Pages 🚀
+        id: deployment
+        uses: actions/deploy-pages@v4

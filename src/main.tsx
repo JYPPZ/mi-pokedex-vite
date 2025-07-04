@@ -8,6 +8,7 @@ import App from './App.tsx';
 import HomePage from './pages/HomePage.tsx';
 import ComparePage from './pages/ComparePage.tsx';
 import PokemonListPage from './pages/PokemonListPage.tsx';
+import PokemonDetailPage from './pages/PokemonDetailPage.tsx';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: 'pokemon',
         element: <PokemonListPage />
+      },
+      {
+        path: 'pokemon/:id',
+        element: <PokemonDetailPage />
       }
     ],
   },
