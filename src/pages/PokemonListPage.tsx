@@ -9,7 +9,18 @@ import { usePokemonData } from "@/hooks/use-pokemon-data"
 export default function PokemonListPage() {
     const [searchParams] = useSearchParams();
     const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-    const { pokemon, loading, loadingMore, hasMore, types, filters, updateFilters, loadMore } = usePokemonData()
+    const {
+        pokemon,
+        loading,
+        loadingMore,
+        hasMore,
+        types,
+        filters,
+        updateFilters,
+        loadMore,
+        totalCount,
+        filteredCount,
+    } = usePokemonData();
 
     // Handle search param from homepage
     useEffect(() => {
@@ -71,21 +82,21 @@ export default function PokemonListPage() {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <div className="flex flex-col gap-8">
                     {/* Filters Sidebar */}
                     <div className="lg:col-span-1">
                         <PokemonFilters
                             filters={filters}
                             types={types}
                             onFiltersChange={updateFilters}
-                            totalCount={pokemon.length}
-                            filteredCount={pokemon.length}
+                            totalCount={totalCount}
+                            filteredCount={filteredCount}
                         />
                     </div>
 
                     {/* Pokemon Grid */}
                     <div className="lg:col-span-3">
-                        {pokemon.length === 0 ? (
+                        {!loading && filteredCount === 0 ? (
                             <div className="text-center py-12">
                                 <div className="text-6xl mb-4">🔍</div>
                                 <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">No Pokémon Found</h3>

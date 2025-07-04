@@ -53,14 +53,23 @@ export const getTypeChart = async () => {
 export const searchPokemonByName = async (searchTerm: string) => {
     if (!searchTerm.trim()) return [];
 
+    // Si el searchTerm es un número, buscar por ID exacto primero
+    if (/^\d+$/.test(searchTerm.trim())) {
+        try {
+            const exactMatch = await apiClient.get(`/pokemon/${searchTerm}`);
+            return [exactMatch.data];
+        } catch (error) {
+            // Si no encuentra el ID exacto, continuar con búsqueda por nombre
+        }
+    }
+
+    // Búsqueda parcial por nombre
     const response = await apiClient.get('/pokemon?limit=1000');
     const data = response.data;
 
     const filtered = data.results
-        .filter(
-            (pokemon: any) =>
-                pokemon.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                pokemon.url.split("/").slice(-2, -1)[0].includes(searchTerm)
+        .filter((pokemon: any) =>
+            pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
         )
         .slice(0, 10);
 

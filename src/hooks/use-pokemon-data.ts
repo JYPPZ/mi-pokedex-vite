@@ -1,8 +1,9 @@
-import { useState, useMemo } from "react";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useState, useMemo, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useDebounce } from "use-debounce";
 import { getPokemonList, getPokemonTypes, getPokemonDetailsFromList } from "@/services/pokemonApi"; // Funciones de servicio
 import type { FilterOptions } from "@/types/pokemon";
+const PAGE_SIZE = 20;
 
 // Valor por defecto para los filtros
 const initialFilters: FilterOptions = {
@@ -17,49 +18,36 @@ const initialFilters: FilterOptions = {
 
 export function usePokemonData() {
   const [filters, setFilters] = useState<FilterOptions>(initialFilters);
+  const [currentPage, setCurrentPage] = useState(1);
   const [debouncedSearch] = useDebounce(filters.search, 300);
 
-  // Lista pokemon
-  const { data: allPokemonList = [], isLoading: isLoadingList } = useQuery({
-    queryKey: ['allPokemonList'],
-    queryFn: () => getPokemonList(1302), // PokeAPI tiene ~1302 pokémon
-    staleTime: Infinity,
-  });
-
-  // obtener todos los tipos de Pokémon
-  const { data: types = [], isLoading: isLoadingTypes } = useQuery({
+  //query para los tipos
+  const { data: types = [] } = useQuery({
     queryKey: ['pokemonTypes'],
     queryFn: getPokemonTypes,
     staleTime: Infinity,
   });
 
-  // Esta es la query que alimenta la UI y se actualiza con los filtros.
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading: isLoadingDetails,
-  } = useInfiniteQuery({
-    queryKey: ['pokemonDetails'], // Se podría añadir los filtros a la key si la API los soportara
-    queryFn: ({ pageParam = 0 }) => getPokemonDetailsFromList(allPokemonList, pageParam, 20), // Nuestra función de servicio ahora recibe la lista
-    getNextPageParam: (_lastPage: any, allPages: any[]) => {
-      const nextPage = allPages.length * 20;
-      return nextPage < allPokemonList.length ? nextPage : undefined;
-    },
-    enabled: !!allPokemonList.length, // Solo se ejecuta cuando la lista maestra está cargada
-    initialPageParam: 0, // <-- Add this line
+  // Lista pokemon
+  const { data: allPokemonList = [], isLoading: isLoadingList } = useQuery({
+    queryKey: ['allPokemonList'],
+    queryFn: () => getPokemonList(1302),
+    staleTime: Infinity,
   });
 
+  // query para TODOS los detalles. Sin paginación
+  const { data: allPokemonDetails = [], isLoading: isLoadingAllDetails } = useQuery({
+    queryKey: ['allPokemonDetails'],
+    queryFn: () => getPokemonDetailsFromList(allPokemonList, 0, allPokemonList.length),
+    staleTime: Infinity,
+    enabled: allPokemonList.length > 0,
+  });
 
-  // 4. Lógica de filtrado y ordenamiento en el CLIENTE (aplicada a los datos ya cargados).
-  const filteredPokemon = useMemo(() => {
-    // Aplanamos las páginas en un solo array
-    const allFetchedPokemon = data?.pages.flat() || [];
+  // Lógica de filtrado y ordenamiento en el CLIENTE
+  const processedPokemon = useMemo(() => {
+    let filtered = [...allPokemonDetails];
 
-    let filtered = allFetchedPokemon;
-
-    // Search filter
+    // Filtro de búsqueda
     if (debouncedSearch) {
       filtered = filtered.filter(p =>
         p.name.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
@@ -69,14 +57,15 @@ export function usePokemonData() {
 
     // Type filter
     if (filters.types.length > 0) {
-      filtered = filtered.filter((p) => p.types.some((type: any) => filters.types.includes(type.type.name)))
+      filtered = filtered.filter((p) =>
+        p.types.some((type: any) => filters.types.includes(type.type.name)))
     }
 
     // Stats filter
-    filtered = filtered.filter((p) => {
-      const totalStats = p.stats.reduce((sum: number, stat: any) => sum + stat.base_stat, 0)
-      return totalStats >= filters.minStats && totalStats <= filters.maxStats
-    })
+    filtered = filtered.filter(p => {
+      const totalStats = p.stats.reduce((sum: number, stat: any) => sum + stat.base_stat, 0);
+      return totalStats >= filters.minStats && totalStats <= filters.maxStats;
+    });
 
     // Sort
     filtered.sort((a, b) => {
@@ -115,22 +104,41 @@ export function usePokemonData() {
     })
 
     return filtered;
-  }, [data, filters, debouncedSearch]);
+  }, [allPokemonDetails, filters, debouncedSearch]);
 
+  // Resetea la página cuando cambian los filtros
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filters, debouncedSearch]);
+
+  // Paginación en el lado del cliente
+  const paginatedPokemon = useMemo(() => {
+    const end = currentPage * PAGE_SIZE;
+    return processedPokemon.slice(0, end);
+  }, [processedPokemon, currentPage]);
+
+  // Función para cargar más
+  const loadMore = () => {
+    const hasMoreToLoad = paginatedPokemon.length < processedPokemon.length;
+    if (hasMoreToLoad) {
+      setCurrentPage(prev => prev + 1);
+    }
+  };
 
   const updateFilters = (newFilters: Partial<FilterOptions>) => {
-    setFilters((prev) => ({ ...prev, ...newFilters }))
-  }
+    setFilters((prev) => ({ ...prev, ...newFilters }));
+  };
 
   return {
-    pokemon: filteredPokemon,
-    loading: isLoadingList || isLoadingTypes,
-    loadingMore: isFetchingNextPage,
-    hasMore: hasNextPage,
+    pokemon: paginatedPokemon,
+    loading: isLoadingList || isLoadingAllDetails,
+    loadingMore: false,
+    hasMore: paginatedPokemon.length < processedPokemon.length,
     types,
     filters,
     updateFilters,
-    loadMore: fetchNextPage,
-    loadingDetails: isLoadingDetails,
-  }
+    loadMore,
+    totalCount: allPokemonDetails.length,
+    filteredCount: processedPokemon.length,
+  };
 }
