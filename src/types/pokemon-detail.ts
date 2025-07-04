@@ -119,4 +119,8 @@ export interface MoveDetail {
       name: string
     }
   }>
+  move_learn_method: {
+    name: string
+  }
+  level_learned_at: number
 }

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiClient = axios.create({
+export const apiClient = axios.create({
     baseURL: 'https://pokeapi.co/api/v2',
 });
 
@@ -107,7 +107,7 @@ export const getPokemonTypes = async () => {
 };
 
 // Carga los detalles de un "trozo" de la lista maestra.
-export const getPokemonDetailsFromList = async (list: {name: string, url: string}[], offset = 0, limit = 20) => {
+export const getPokemonDetailsFromList = async (list: { name: string, url: string }[], offset = 0, limit = 20) => {
     const batch = list.slice(offset, offset + limit);
     const promises = batch.map(p => {
         // Extraer el ID de la URL y usar la ruta relativa
@@ -116,4 +116,39 @@ export const getPokemonDetailsFromList = async (list: {name: string, url: string
     });
     const responses = await Promise.all(promises);
     return responses.map(res => res.data);
+};
+
+// Obtener datos de la especie de un Pokémon
+export const getPokemonSpecies = async (speciesUrl: string) => {
+    // Extraer el ID de la URL de especies
+    const speciesId = speciesUrl.split("/").slice(-2, -1)[0];
+    const response = await apiClient.get(`/pokemon-species/${speciesId}`);
+    return response.data;
+};
+
+// Obtener cadena evolutiva
+export const getEvolutionChain = async (evolutionChainUrl: string) => {
+    // Extraer el ID de la URL de evolución
+    const chainId = evolutionChainUrl.split("/").slice(-2, -1)[0];
+    const response = await apiClient.get(`/evolution-chain/${chainId}`);
+    return response.data;
+};
+
+// Obtener detalles de movimientos con información de aprendizaje
+export const getMoveDetails = async (pokemonMoves: any[], limit = 20) => {
+    const movePromises = pokemonMoves.slice(0, limit).map(async (moveInfo: any) => {
+        // Extraer el ID del movimiento de la URL
+        const moveId = moveInfo.move.url.split("/").slice(-2, -1)[0];
+        const response = await apiClient.get(`/move/${moveId}`);
+        const moveData = response.data;
+
+        return {
+            ...moveData,
+            level_learned_at: moveInfo.version_group_details[0]?.level_learned_at || 0,
+            move_learn_method: moveInfo.version_group_details[0]?.move_learn_method || { name: "unknown" },
+        };
+    });
+
+    const movesData = await Promise.all(movePromises);
+    return movesData;
 };
