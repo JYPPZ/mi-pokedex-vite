@@ -4,7 +4,7 @@ const apiClient = axios.create({
     baseURL: 'https://pokeapi.co/api/v2',
 });
 
-// Pokémon o Pokemon, nunca supe :)
+// Pokémon o Pokemon, nunca supe :) esta funcion muestra algunos pokemon en la pagina de inicio
 export const getFeaturedPokemon = async () => {
     const featuredIds = [25, 6, 150, 448, 445]; // No sé si sean los mas populares pero se ven bonitos
     const promises = featuredIds.map(id => apiClient.get(`/pokemon/${id}`));
@@ -79,4 +79,32 @@ export const searchPokemonByName = async (searchTerm: string) => {
 export const getPokemonById = async (id: number) => {
     const response = await apiClient.get(`/pokemon/${id}`);
     return response.data;
+};
+
+// obtener lista de pokemon
+export const getPokemonList = async (limit = 151) => {
+    const response = await apiClient.get(`/pokemon?limit=${limit}`);
+    return response.data.results;
+};
+
+// Obtener todos los tipos de Pokémon
+export const getPokemonTypes = async () => {
+    const response = await apiClient.get('/type');
+    const data = response.data;
+    const typeNames = data.results
+        .filter((type: any) => !["unknown", "shadow"].includes(type.name))
+        .map((type: any) => type.name);
+    return typeNames;
+};
+
+// Carga los detalles de un "trozo" de la lista maestra.
+export const getPokemonDetailsFromList = async (list: {name: string, url: string}[], offset = 0, limit = 20) => {
+    const batch = list.slice(offset, offset + limit);
+    const promises = batch.map(p => {
+        // Extraer el ID de la URL y usar la ruta relativa
+        const id = p.url.split("/").slice(-2, -1)[0];
+        return apiClient.get(`/pokemon/${id}`);
+    });
+    const responses = await Promise.all(promises);
+    return responses.map(res => res.data);
 };
