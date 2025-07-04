@@ -11,5 +11,5 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  base: '/mi-pokedex-vite/'
+  base: 'mi-pokedex-vite'
 })

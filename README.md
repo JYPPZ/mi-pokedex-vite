@@ -3,7 +3,7 @@
 Bienvenido a **Pokédex by Juanes**, una aplicación web moderna, rápida y completamente responsive para explorar el vasto mundo de Pokémon. Este proyecto fue desarrollado como una prueba técnica para demostrar habilidades en el desarrollo front-end con tecnologías modernas.
 
 <p align="center">
-  <a href="[ENLACE-A-TU-DEMO-EN-VERCEL-O-NETLIFY]" target="_blank">
+  <a href="https://jyppz.github.io/mi-pokedex-vite" target="_blank">
     <strong>Ver Demo en Vivo »</strong>
   </a>
 </p>
