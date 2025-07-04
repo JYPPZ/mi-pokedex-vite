@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import { ThemeProvider } from "./components/theme-provider"; // La ruta puede variar si moviste la carpeta
-import { Navigation } from "./components/navigation";
+import { ThemeProvider } from "./components/theme-provider";
+import { Navigation } from "@/components/navigation";
 import { Toaster } from "@/components/ui/sonner";
 
 function App() {
