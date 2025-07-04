@@ -57,7 +57,7 @@ export default function HomePage() {
                                 PokéDex
                             </h1>
                             <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                                Discover, explore, and master the world of Pokémon with the most comprehensive digital Pokédex
+                                Descubre, explora y domina el mundo Pokémon con la Pokédex digital más completa
                             </p>
                         </div>
 
@@ -67,13 +67,13 @@ export default function HomePage() {
                                 <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
                                 <Input
                                     type="text"
-                                    placeholder="Search for any Pokémon..."
+                                    placeholder="Busca cualquier Pokémon..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                     className="pl-12 pr-4 py-4 text-lg rounded-full border-2 border-gray-200 focus:border-blue-500 shadow-lg"
                                 />
                                 <Button type="submit" className="absolute right-2 top-1/2 transform -translate-y-1/2 rounded-full px-6">
-                                    Search
+                                    Buscar
                                 </Button>
                             </div>
                         </form>
@@ -99,7 +99,7 @@ export default function HomePage() {
                                     ) : (
                                         <div className="text-3xl font-bold text-purple-600">18</div>
                                     )}
-                                    <div className="text-gray-600">Types</div>
+                                    <div className="text-gray-600">Tipos</div>
                                 </CardContent>
                             </Card>
                             {/* Generations */}
@@ -110,7 +110,7 @@ export default function HomePage() {
                                     ) : (
                                         <div className="text-3xl font-bold text-indigo-600">{stats.generations}</div>
                                     )}
-                                    <div className="text-gray-600">Generations</div>
+                                    <div className="text-gray-600">Generaciones</div>
                                 </CardContent>
                             </Card>
                         </div>
@@ -122,8 +122,8 @@ export default function HomePage() {
             <section className="py-20">
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-12">
-                        <h2 className="text-4xl font-bold text-gray-800 dark:text-white mb-4">Featured Pokémon</h2>
-                        <p className="text-xl text-gray-600 dark:text-gray-300">Meet some of the most iconic Pokémon</p>
+                        <h2 className="text-4xl font-bold text-gray-800 dark:text-white mb-4">Pokémon destacados</h2>
+                        <p className="text-xl text-gray-600 dark:text-gray-300">Conoce algunos de los Pokémon más icónicos</p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
@@ -169,8 +169,8 @@ export default function HomePage() {
             <section className="py-20 bg-white/50 dark:bg-gray-800/50">
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-12">
-                        <h2 className="text-4xl font-bold text-gray-800 dark:text-white mb-4">Powerful Features</h2>
-                        <p className="text-xl text-gray-600 dark:text-gray-300">Everything you need to become a Pokémon master</p>
+                        <h2 className="text-4xl font-bold text-gray-800 dark:text-white mb-4">Funciones poderosas</h2>
+                        <p className="text-xl text-gray-600 dark:text-gray-300">Todo lo que necesitas para convertirte en un maestro Pokémon</p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -178,9 +178,9 @@ export default function HomePage() {
                             <div className="w-16 h-16 mx-auto bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
                                 <Search className="w-8 h-8 text-white" />
                             </div>
-                            <h3 className="text-xl font-bold text-gray-800 dark:text-white">Advanced Search</h3>
+                            <h3 className="text-xl font-bold text-gray-800 dark:text-white">Búsqueda avanzada</h3>
                             <p className="text-gray-600 dark:text-gray-300">
-                                Find any Pokémon with powerful search and filtering options
+                                Encuentra cualquier Pokémon con potentes opciones de búsqueda y filtrado
                             </p>
                         </div>
 
@@ -188,24 +188,24 @@ export default function HomePage() {
                             <div className="w-16 h-16 mx-auto bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center">
                                 <Sparkles className="w-8 h-8 text-white" />
                             </div>
-                            <h3 className="text-xl font-bold text-gray-800 dark:text-white">Detailed Info</h3>
-                            <p className="text-gray-600 dark:text-gray-300">Complete stats, abilities, moves, and evolution chains</p>
+                            <h3 className="text-xl font-bold text-gray-800 dark:text-white">Información detallada</h3>
+                            <p className="text-gray-600 dark:text-gray-300">Estadísticas completas, habilidades, movimientos y cadenas evolutivas</p>
                         </div>
 
                         <div className="text-center space-y-4">
                             <div className="w-16 h-16 mx-auto bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center">
                                 <Zap className="w-8 h-8 text-white" />
                             </div>
-                            <h3 className="text-xl font-bold text-gray-800 dark:text-white">Compare</h3>
-                            <p className="text-gray-600 dark:text-gray-300">Side-by-side comparison of different Pokémon</p>
+                            <h3 className="text-xl font-bold text-gray-800 dark:text-white">Comparar</h3>
+                            <p className="text-gray-600 dark:text-gray-300">Comparación lado a lado de diferentes Pokémon</p>
                         </div>
 
                         <div className="text-center space-y-4">
                             <div className="w-16 h-16 mx-auto bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center">
                                 <Heart className="w-8 h-8 text-white" />
                             </div>
-                            <h3 className="text-xl font-bold text-gray-800 dark:text-white">Favorites</h3>
-                            <p className="text-gray-600 dark:text-gray-300">Save and organize your favorite Pokémon</p>
+                            <h3 className="text-xl font-bold text-gray-800 dark:text-white">Favoritos</h3>
+                            <p className="text-gray-600 dark:text-gray-300">Guarda y organiza tus Pokémon favoritos</p>
                         </div>
                     </div>
                 </div>
@@ -215,19 +215,19 @@ export default function HomePage() {
             <section className="py-20">
                 <div className="container mx-auto px-4 text-center">
                     <div className="max-w-3xl mx-auto space-y-8">
-                        <h2 className="text-4xl font-bold text-gray-800 dark:text-white">Ready to Start Your Journey?</h2>
+                        <h2 className="text-4xl font-bold text-gray-800 dark:text-white">¿Listo para comenzar tu aventura?</h2>
                         <p className="text-xl text-gray-600 dark:text-gray-300">
-                            Explore the complete world of Pokémon with our comprehensive Pokédex
+                            Explora el mundo completo de Pokémon con nuestra Pokédex integral
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <Link to="/pokemon">
                                 <Button size="lg" className="px-8 py-4 text-lg rounded-full">
-                                    Browse All Pokémon
+                                    Ver todos los Pokémon
                                 </Button>
                             </Link>
                             <Link to="/compare">
                                 <Button variant="outline" size="lg" className="px-8 py-4 text-lg rounded-full bg-transparent">
-                                    Compare Pokémon
+                                    Comparar Pokémon
                                 </Button>
                             </Link>
                         </div>
