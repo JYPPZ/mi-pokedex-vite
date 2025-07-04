@@ -28,8 +28,7 @@ export default function HomePage() {
     const { data: stats, isLoading: isLoadingStats } = useQuery({
         queryKey: ['pokemonStats'],
         queryFn: getPokemonStats,
-        //para que no se vea un "0" mientras carga
-        initialData: { total: 0, types: 18, generations: 8 },
+        //initialData: { total: 0, types: 18, generations: 8 },
     });
 
     // función de busqueda
@@ -83,10 +82,10 @@ export default function HomePage() {
                             {/* Total Pokémon */}
                             <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
                                 <CardContent className="p-6 text-center">
-                                    {isLoadingStats ? (
-                                        <div className="h-8 w-24 mx-auto bg-gray-200 rounded animate-pulse mb-2" />
+                                {isLoadingStats ? (
+                                        <div className="h-8 w-12 mx-auto bg-gray-200 rounded animate-pulse mb-2" />
                                     ) : (
-                                        <div className="text-3xl font-bold text-blue-600">{stats.total.toLocaleString()}</div>
+                                        <div className="text-3xl font-bold text-blue-600">{stats?.total.toLocaleString()}</div>
                                     )}
                                     <div className="text-gray-600">Total Pokémon</div>
                                 </CardContent>
@@ -97,7 +96,7 @@ export default function HomePage() {
                                     {isLoadingStats ? (
                                         <div className="h-8 w-12 mx-auto bg-gray-200 rounded animate-pulse mb-2" />
                                     ) : (
-                                        <div className="text-3xl font-bold text-purple-600">18</div>
+                                        <div className="text-3xl font-bold text-purple-600">{stats?.types}</div>
                                     )}
                                     <div className="text-gray-600">Tipos</div>
                                 </CardContent>
@@ -108,7 +107,7 @@ export default function HomePage() {
                                     {isLoadingStats ? (
                                         <div className="h-8 w-12 mx-auto bg-gray-200 rounded animate-pulse mb-2" />
                                     ) : (
-                                        <div className="text-3xl font-bold text-indigo-600">{stats.generations}</div>
+                                        <div className="text-3xl font-bold text-indigo-600">{stats?.generations}</div>
                                     )}
                                     <div className="text-gray-600">Generaciones</div>
                                 </CardContent>
@@ -167,14 +166,14 @@ export default function HomePage() {
 
             {/* Features Section */}
             <section className="py-20 bg-white/50 dark:bg-gray-800/50">
-                <div className="container mx-auto px-4">
+                <div className="container mx-auto px-4 flex flex-col items-center text-center">
                     <div className="text-center mb-12">
                         <h2 className="text-4xl font-bold text-gray-800 dark:text-white mb-4">Funciones poderosas</h2>
                         <p className="text-xl text-gray-600 dark:text-gray-300">Todo lo que necesitas para convertirte en un maestro Pokémon</p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        <div className="text-center space-y-4">
+                    <div className="flex flex-wrap justify-center gap-8">
+                        <div className="col-span-1 md:col-span-1 lg:col-span-1 mx-auto text-center space-y-4">
                             <div className="w-16 h-16 mx-auto bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
                                 <Search className="w-8 h-8 text-white" />
                             </div>
@@ -184,7 +183,7 @@ export default function HomePage() {
                             </p>
                         </div>
 
-                        <div className="text-center space-y-4">
+                        <div className="col-span-1 md:col-span-1 lg:col-span-1 mx-auto text-center space-y-4">
                             <div className="w-16 h-16 mx-auto bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center">
                                 <Sparkles className="w-8 h-8 text-white" />
                             </div>
@@ -192,20 +191,12 @@ export default function HomePage() {
                             <p className="text-gray-600 dark:text-gray-300">Estadísticas completas, habilidades, movimientos y cadenas evolutivas</p>
                         </div>
 
-                        <div className="text-center space-y-4">
+                        <div className="col-span-1 md:col-span-1 lg:col-span-1 mx-auto text-center space-y-4">
                             <div className="w-16 h-16 mx-auto bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center">
                                 <Zap className="w-8 h-8 text-white" />
                             </div>
                             <h3 className="text-xl font-bold text-gray-800 dark:text-white">Comparar</h3>
                             <p className="text-gray-600 dark:text-gray-300">Comparación lado a lado de diferentes Pokémon</p>
-                        </div>
-
-                        <div className="text-center space-y-4">
-                            <div className="w-16 h-16 mx-auto bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center">
-                                <Heart className="w-8 h-8 text-white" />
-                            </div>
-                            <h3 className="text-xl font-bold text-gray-800 dark:text-white">Favoritos</h3>
-                            <p className="text-gray-600 dark:text-gray-300">Guarda y organiza tus Pokémon favoritos</p>
                         </div>
                     </div>
                 </div>

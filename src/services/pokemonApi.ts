@@ -17,7 +17,7 @@ export const getPokemonStats = async () => {
   const response = await apiClient.get('/pokemon?limit=1');
   return {
     total: response.data.count,
-    types: 18, // este valor es estático en la API
-    generations: 8, // este tambien
+    types: 19, // este valor es estático en la API
+    generations: 9, // este tambien
   };
 };
