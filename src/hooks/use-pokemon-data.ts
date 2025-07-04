@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useDebounce } from "use-debounce";
 import { getPokemonList, getPokemonTypes, getPokemonDetailsFromList } from "@/services/pokemonApi"; // Funciones de servicio
@@ -125,9 +125,9 @@ export function usePokemonData() {
     }
   };
 
-  const updateFilters = (newFilters: Partial<FilterOptions>) => {
+  const updateFilters = useCallback((newFilters: Partial<FilterOptions>) => {
     setFilters((prev) => ({ ...prev, ...newFilters }));
-  };
+}, []);
 
   return {
     pokemon: paginatedPokemon,

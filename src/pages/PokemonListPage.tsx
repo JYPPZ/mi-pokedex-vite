@@ -25,10 +25,10 @@ export default function PokemonListPage() {
     // Handle search param from homepage
     useEffect(() => {
         const searchQuery = searchParams.get("search")
-        if (searchQuery) {
-            updateFilters({ search: searchQuery })
+        if (searchQuery && searchQuery !== filters.search) {
+            updateFilters({ search: searchQuery });
         }
-    }, [searchParams, updateFilters])
+    }, [searchParams, updateFilters, filters.search])
 
     if (loading) {
         return (
