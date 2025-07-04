@@ -24,7 +24,7 @@ const queryClient = new QueryClient({
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />, 
+    element: <App />,
     children: [
       {
         index: true,
@@ -32,7 +32,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'compare',
-        element: <ComparePage />, 
+        element: <ComparePage />,
       },
       {
         path: 'pokemon',
@@ -44,7 +44,11 @@ const router = createBrowserRouter([
       }
     ],
   },
-]);
+],
+  {
+    basename: import.meta.env.BASE_URL
+  }
+);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
